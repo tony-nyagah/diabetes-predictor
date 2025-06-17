@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction Result - Diabetes Progression Predictor</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-content">
+                <h1 class="title">🩺 Prediction Results</h1>
+                <p class="subtitle">Diabetes progression prediction based on your input</p>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="result-container">
+                <div class="result-card">
+                    <div class="result-header">
+                        <h2 class="result-title">Prediction Results</h2>
+                    </div>
+                    
+                    <div class="result-body">
+                        <div class="prediction-score">
+                            <div class="score-circle {{ 'low' if prediction < 100 else 'medium' if prediction < 150 else 'high' }}">
+                                <span class="score-value">{{ prediction }}</span>
+                                <span class="score-label">Progression Score</span>
+                            </div>
+                        </div>
+                        
+                        <div class="interpretation">
+                            <h3 class="interpretation-title">Interpretation</h3>
+                            <p class="interpretation-text {{ 'low' if prediction < 100 else 'medium' if prediction < 150 else 'high' }}">
+                                {{ interpretation }}
+                            </p>
+                        </div>
+
+                        <div class="risk-indicator">
+                            <div class="risk-bar">
+                                <div class="risk-level low {{ 'active' if prediction < 100 else '' }}">
+                                    <span>Low</span>
+                                    <small>&lt; 100</small>
+                                </div>
+                                <div class="risk-level medium {{ 'active' if 100 <= prediction < 150 else '' }}">
+                                    <span>Medium</span>
+                                    <small>100-149</small>
+                                </div>
+                                <div class="risk-level high {{ 'active' if prediction >= 150 else '' }}">
+                                    <span>High</span>
+                                    <small>≥ 150</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="input-summary">
+                    <h3 class="summary-title">Input Data Summary</h3>
+                    <div class="summary-grid">
+                        <div class="summary-item">
+                            <span class="summary-label">Age:</span>
+                            <span class="summary-value">{{ patient_data.age }}</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">Sex:</span>
+                            <span class="summary-value">{{ patient_data.sex }}</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">BMI:</span>
+                            <span class="summary-value">{{ patient_data.bmi }}</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">Blood Pressure:</span>
+                            <span class="summary-value">{{ patient_data.bp }}</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">Serum 1:</span>
+                            <span class="summary-value">{{ patient_data.s1 }}</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">Serum 2:</span>
+                            <span class="summary-value">{{ patient_data.s2 }}</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">Serum 3:</span>
+                            <span class="summary-value">{{ patient_data.s3 }}</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">Serum 4:</span>
+                            <span class="summary-value">{{ patient_data.s4 }}</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">Serum 5:</span>
+                            <span class="summary-value">{{ patient_data.s5 }}</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">Serum 6:</span>
+                            <span class="summary-value">{{ patient_data.s6 }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="result-actions">
+                    <a href="/" class="btn btn-primary">🔄 Make Another Prediction</a>
+                    <button onclick="window.print()" class="btn btn-secondary">🖨️ Print Results</button>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>&copy; 2025 Diabetes Progression Predictor. Built with FastAPI and machine learning.</p>
+        </footer>
+    </div>
+</body>
+</html>

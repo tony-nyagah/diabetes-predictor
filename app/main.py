@@ -1,4 +1,7 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request, Form
+from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
 import pickle
 import numpy as np
@@ -41,13 +44,22 @@ app = FastAPI(
     version="1.0.0",
 )
 
+# Mount static files and templates
+app.mount("/static", StaticFiles(directory="static"), name="static")
+templates = Jinja2Templates(directory="templates")
+
 # Load the trained model
 model_path = os.path.join("models", "diabetes_model.pkl")
 with open(model_path, "rb") as f:
     model = pickle.load(f)
 
 
-@app.get("/")
+@app.get("/", response_class=HTMLResponse)
+def home(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})
+
+
+@app.get("/health")
 def health_check():
     return {"status": "healthy", "model": "diabetes_progression_v1"}
 
@@ -55,7 +67,7 @@ def health_check():
 @app.post("/predict")
 def predict_progression(patient: PatientData):
     """
-    Predict diabetes progression score
+    Predict diabetes progression score (API endpoint)
     """
     # Convert input to numpy array
     features = np.array(
@@ -85,6 +97,52 @@ def predict_progression(patient: PatientData):
     }
 
 
+@app.post("/predict-form", response_class=HTMLResponse)
+def predict_form(
+    request: Request,
+    age: float = Form(...),
+    sex: float = Form(...),
+    bmi: float = Form(...),
+    bp: float = Form(...),
+    s1: float = Form(...),
+    s2: float = Form(...),
+    s3: float = Form(...),
+    s4: float = Form(...),
+    s5: float = Form(...),
+    s6: float = Form(...),
+):
+    """
+    Predict diabetes progression score (form submission)
+    """
+    # Convert input to numpy array
+    features = np.array([[age, sex, bmi, bp, s1, s2, s3, s4, s5, s6]])
+
+    # Make prediction
+    prediction = model.predict(features)[0]
+
+    # Return result with template
+    return templates.TemplateResponse(
+        "result.html",
+        {
+            "request": request,
+            "prediction": round(prediction, 2),
+            "interpretation": get_interpretation(prediction),
+            "patient_data": {
+                "age": age,
+                "sex": sex,
+                "bmi": bmi,
+                "bp": bp,
+                "s1": s1,
+                "s2": s2,
+                "s3": s3,
+                "s4": s4,
+                "s5": s5,
+                "s6": s6,
+            },
+        },
+    )
+
+
 def get_interpretation(score):
     """Provide human-readable interpretation of the score"""
     if score < 100:
@@ -93,3 +151,13 @@ def get_interpretation(score):
         return "Average progression"
     else:
         return "Above average progression"
+
+
+def get_risk_level(score):
+    """Get risk level for styling"""
+    if score < 100:
+        return "low"
+    elif score < 150:
+        return "medium"
+    else:
+        return "high"
