@@ -28,15 +28,26 @@ uv run uvicorn app.main:app --reload
 # Visit http://localhost:8000
 ```
 
-### Docker
+### Docker (from GitHub Container Registry)
 
 ```bash
-# Build and run
+# Pull and run the latest image
+docker run -p 8000:8000 ghcr.io/YOUR_GITHUB_USERNAME/diabetes-progression-predictor:latest
+
+# Or use Docker Compose with the registry image
+docker-compose pull
+docker-compose up
+```
+
+### Building locally
+
+```bash
+# Build and run locally
 docker build -t diabetes-progression-predictor .
 docker run -p 8000:8000 diabetes-progression-predictor
 
-# Or use Docker Compose
-docker-compose up
+# Or use Docker Compose for local development
+docker-compose -f docker-compose.dev.yaml up
 ```
 
 ## API Usage
