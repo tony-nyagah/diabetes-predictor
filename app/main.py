@@ -40,8 +40,12 @@ class PatientData(BaseModel):
 # Initialize FastAPI app
 app = FastAPI(
     title="Diabetes Progression Predictor",
-    description="Predicts diabetes progression score from physiological features",
+    description="Predicts diabetes progression score from physiological features. Built by Antony Nyagah (https://antonynyagah.com)",
     version="1.0.0",
+    contact={
+        "name": "Antony Nyagah",
+        "url": "https://antonynyagah.com",
+    },
 )
 
 # Mount static files and templates
