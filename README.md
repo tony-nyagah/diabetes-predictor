@@ -13,6 +13,8 @@ A web app that predicts diabetes progression using machine learning. Built with 
 
 ### Local Development
 
+You can fork this repository and run it locally using the following steps:
+
 ```bash
 # Clone and install
 git clone <your-repo-url>
@@ -32,7 +34,7 @@ uv run uvicorn app.main:app --reload
 
 ```bash
 # Pull and run the latest image
-docker run -p 8000:8000 ghcr.io/YOUR_GITHUB_USERNAME/diabetes-progression-predictor:latest
+docker run -p 8000:8000 ghcr.io/tony-nyagah/diabetes-progression-predictor:latest
 
 # Or use Docker Compose with the registry image
 docker-compose pull
