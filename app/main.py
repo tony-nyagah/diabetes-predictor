@@ -143,7 +143,7 @@ def predict_form(
     )
 
 
-def get_interpretation(score):
+def get_interpretation(score: int | float) -> str:
     """Provide human-readable interpretation of the score"""
     if score < 100:
         return "Below average progression"
@@ -153,7 +153,7 @@ def get_interpretation(score):
         return "Above average progression"
 
 
-def get_risk_level(score):
+def get_risk_level(score: int | float) -> str:
     """Get risk level for styling"""
     if score < 100:
         return "low"

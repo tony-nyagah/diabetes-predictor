@@ -1,5 +1,5 @@
 [project]
-name = "diabetes-predictor"
+name = "diabetes-progression-predictor"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"

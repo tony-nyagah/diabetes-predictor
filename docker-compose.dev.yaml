@@ -1,0 +1,27 @@
+version: "3.8"
+
+services:
+  diabetes-progression-predictor-dev:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - ENV=development
+      - HOST=0.0.0.0
+      - PORT=8000
+      - RELOAD=true
+    volumes:
+      # Mount source code for live reloading
+      - .:/app
+      - /app/__pycache__  # Exclude pycache
+      - /app/.venv        # Exclude virtual env if present
+    restart: unless-stopped
+    command: uv run uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    networks:
+      - diabetes-dev-network
+
+networks:
+  diabetes-dev-network:
+    driver: bridge

@@ -46,7 +46,7 @@ wheels = [
 ]
 
 [[package]]
-name = "diabetes-predictor"
+name = "diabetes-progression-predictor"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
