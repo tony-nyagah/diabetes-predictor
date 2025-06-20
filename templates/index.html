@@ -1,282 +1,237 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Diabetes Progression Predictor</title>
-    <link rel="stylesheet" href="/static/css/style.css" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
-  </head>
-  <body>
-    <div class="container">
-      <header class="header">
-        <div class="header-content">
-          <h1 class="title">🩺 Diabetes Progression Predictor</h1>
-          <p class="subtitle">
-            Enter patient physiological measurements to predict diabetes
-            progression
-          </p>
-        </div>
-      </header>
+{% extends "base.html" %}
+{% block content %}
+<div class="form-container">
+  <form action="/predict-form" method="post" class="prediction-form">
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="age" class="form-label">
+          Age (normalized)
+          <span class="tooltip">
+            ℹ️
+            <span class="tooltip-text"
+              >Normalized age value (typically between -0.1 and 0.1)</span
+            >
+          </span>
+        </label>
+        <input
+          type="number"
+          step="0.001"
+          name="age"
+          id="age"
+          class="form-input"
+          placeholder="e.g., 0.05"
+          required
+        />
+      </div>
 
-      <main class="main-content">
-        <div class="form-container">
-          <form action="/predict-form" method="post" class="prediction-form">
-            <div class="form-grid">
-              <div class="form-group">
-                <label for="age" class="form-label">
-                  Age (normalized)
-                  <span class="tooltip">
-                    ℹ️
-                    <span class="tooltip-text"
-                      >Normalized age value (typically between -0.1 and
-                      0.1)</span
-                    >
-                  </span>
-                </label>
-                <input
-                  type="number"
-                  step="0.001"
-                  name="age"
-                  id="age"
-                  class="form-input"
-                  placeholder="e.g., 0.05"
-                  required
-                />
-              </div>
+      <div class="form-group">
+        <label for="sex" class="form-label">
+          Sex (normalized)
+          <span class="tooltip">
+            ℹ️
+            <span class="tooltip-text"
+              >Normalized sex value (typically -0.04 for female, 0.05 for
+              male)</span
+            >
+          </span>
+        </label>
+        <input
+          type="number"
+          step="0.001"
+          name="sex"
+          id="sex"
+          class="form-input"
+          placeholder="e.g., 0.05"
+          required
+        />
+      </div>
 
-              <div class="form-group">
-                <label for="sex" class="form-label">
-                  Sex (normalized)
-                  <span class="tooltip">
-                    ℹ️
-                    <span class="tooltip-text"
-                      >Normalized sex value (typically -0.04 for female, 0.05
-                      for male)</span
-                    >
-                  </span>
-                </label>
-                <input
-                  type="number"
-                  step="0.001"
-                  name="sex"
-                  id="sex"
-                  class="form-input"
-                  placeholder="e.g., 0.05"
-                  required
-                />
-              </div>
+      <div class="form-group">
+        <label for="bmi" class="form-label">
+          BMI (normalized)
+          <span class="tooltip">
+            ℹ️
+            <span class="tooltip-text"
+              >Normalized BMI value (typically between -0.1 and 0.2)</span
+            >
+          </span>
+        </label>
+        <input
+          type="number"
+          step="0.001"
+          name="bmi"
+          id="bmi"
+          class="form-input"
+          placeholder="e.g., 0.06"
+          required
+        />
+      </div>
 
-              <div class="form-group">
-                <label for="bmi" class="form-label">
-                  BMI (normalized)
-                  <span class="tooltip">
-                    ℹ️
-                    <span class="tooltip-text"
-                      >Normalized BMI value (typically between -0.1 and
-                      0.2)</span
-                    >
-                  </span>
-                </label>
-                <input
-                  type="number"
-                  step="0.001"
-                  name="bmi"
-                  id="bmi"
-                  class="form-input"
-                  placeholder="e.g., 0.06"
-                  required
-                />
-              </div>
+      <div class="form-group">
+        <label for="bp" class="form-label">
+          Blood Pressure (normalized)
+          <span class="tooltip">
+            ℹ️
+            <span class="tooltip-text">Normalized blood pressure value</span>
+          </span>
+        </label>
+        <input
+          type="number"
+          step="0.001"
+          name="bp"
+          id="bp"
+          class="form-input"
+          placeholder="e.g., 0.02"
+          required
+        />
+      </div>
 
-              <div class="form-group">
-                <label for="bp" class="form-label">
-                  Blood Pressure (normalized)
-                  <span class="tooltip">
-                    ℹ️
-                    <span class="tooltip-text"
-                      >Normalized blood pressure value</span
-                    >
-                  </span>
-                </label>
-                <input
-                  type="number"
-                  step="0.001"
-                  name="bp"
-                  id="bp"
-                  class="form-input"
-                  placeholder="e.g., 0.02"
-                  required
-                />
-              </div>
+      <div class="form-group">
+        <label for="s1" class="form-label">
+          Serum 1 (normalized)
+          <span class="tooltip">
+            ℹ️
+            <span class="tooltip-text"
+              >First serum measurement (normalized)</span
+            >
+          </span>
+        </label>
+        <input
+          type="number"
+          step="0.001"
+          name="s1"
+          id="s1"
+          class="form-input"
+          placeholder="e.g., -0.04"
+          required
+        />
+      </div>
 
-              <div class="form-group">
-                <label for="s1" class="form-label">
-                  Serum 1 (normalized)
-                  <span class="tooltip">
-                    ℹ️
-                    <span class="tooltip-text"
-                      >First serum measurement (normalized)</span
-                    >
-                  </span>
-                </label>
-                <input
-                  type="number"
-                  step="0.001"
-                  name="s1"
-                  id="s1"
-                  class="form-input"
-                  placeholder="e.g., -0.04"
-                  required
-                />
-              </div>
+      <div class="form-group">
+        <label for="s2" class="form-label">
+          Serum 2 (normalized)
+          <span class="tooltip">
+            ℹ️
+            <span class="tooltip-text"
+              >Second serum measurement (normalized)</span
+            >
+          </span>
+        </label>
+        <input
+          type="number"
+          step="0.001"
+          name="s2"
+          id="s2"
+          class="form-input"
+          placeholder="e.g., -0.04"
+          required
+        />
+      </div>
 
-              <div class="form-group">
-                <label for="s2" class="form-label">
-                  Serum 2 (normalized)
-                  <span class="tooltip">
-                    ℹ️
-                    <span class="tooltip-text"
-                      >Second serum measurement (normalized)</span
-                    >
-                  </span>
-                </label>
-                <input
-                  type="number"
-                  step="0.001"
-                  name="s2"
-                  id="s2"
-                  class="form-input"
-                  placeholder="e.g., -0.04"
-                  required
-                />
-              </div>
+      <div class="form-group">
+        <label for="s3" class="form-label">
+          Serum 3 (normalized)
+          <span class="tooltip">
+            ℹ️
+            <span class="tooltip-text"
+              >Third serum measurement (normalized)</span
+            >
+          </span>
+        </label>
+        <input
+          type="number"
+          step="0.001"
+          name="s3"
+          id="s3"
+          class="form-input"
+          placeholder="e.g., -0.02"
+          required
+        />
+      </div>
 
-              <div class="form-group">
-                <label for="s3" class="form-label">
-                  Serum 3 (normalized)
-                  <span class="tooltip">
-                    ℹ️
-                    <span class="tooltip-text"
-                      >Third serum measurement (normalized)</span
-                    >
-                  </span>
-                </label>
-                <input
-                  type="number"
-                  step="0.001"
-                  name="s3"
-                  id="s3"
-                  class="form-input"
-                  placeholder="e.g., -0.02"
-                  required
-                />
-              </div>
+      <div class="form-group">
+        <label for="s4" class="form-label">
+          Serum 4 (normalized)
+          <span class="tooltip">
+            ℹ️
+            <span class="tooltip-text"
+              >Fourth serum measurement (normalized)</span
+            >
+          </span>
+        </label>
+        <input
+          type="number"
+          step="0.001"
+          name="s4"
+          id="s4"
+          class="form-input"
+          placeholder="e.g., -0.01"
+          required
+        />
+      </div>
 
-              <div class="form-group">
-                <label for="s4" class="form-label">
-                  Serum 4 (normalized)
-                  <span class="tooltip">
-                    ℹ️
-                    <span class="tooltip-text"
-                      >Fourth serum measurement (normalized)</span
-                    >
-                  </span>
-                </label>
-                <input
-                  type="number"
-                  step="0.001"
-                  name="s4"
-                  id="s4"
-                  class="form-input"
-                  placeholder="e.g., -0.01"
-                  required
-                />
-              </div>
+      <div class="form-group">
+        <label for="s5" class="form-label">
+          Serum 5 (normalized)
+          <span class="tooltip">
+            ℹ️
+            <span class="tooltip-text"
+              >Fifth serum measurement (normalized)</span
+            >
+          </span>
+        </label>
+        <input
+          type="number"
+          step="0.001"
+          name="s5"
+          id="s5"
+          class="form-input"
+          placeholder="e.g., 0.01"
+          required
+        />
+      </div>
 
-              <div class="form-group">
-                <label for="s5" class="form-label">
-                  Serum 5 (normalized)
-                  <span class="tooltip">
-                    ℹ️
-                    <span class="tooltip-text"
-                      >Fifth serum measurement (normalized)</span
-                    >
-                  </span>
-                </label>
-                <input
-                  type="number"
-                  step="0.001"
-                  name="s5"
-                  id="s5"
-                  class="form-input"
-                  placeholder="e.g., 0.01"
-                  required
-                />
-              </div>
-
-              <div class="form-group">
-                <label for="s6" class="form-label">
-                  Serum 6 (normalized)
-                  <span class="tooltip">
-                    ℹ️
-                    <span class="tooltip-text"
-                      >Sixth serum measurement (normalized)</span
-                    >
-                  </span>
-                </label>
-                <input
-                  type="number"
-                  step="0.001"
-                  name="s6"
-                  id="s6"
-                  class="form-input"
-                  placeholder="e.g., 0.02"
-                  required
-                />
-              </div>
-            </div>
-
-            <div class="form-actions">
-              <button type="submit" class="btn btn-primary">
-                🔍 Predict Progression
-              </button>
-              <button
-                type="button"
-                class="btn btn-secondary"
-                onclick="fillSampleData()"
-              >
-                🎲 Generate Random Data
-              </button>
-              <button
-                type="button"
-                class="btn btn-secondary"
-                onclick="clearForm()"
-              >
-                🗑️ Clear Form
-              </button>
-            </div>
-          </form>
-        </div>
-      </main>
-
-      <footer class="footer">
-        <p>
-          &copy; 2025 Diabetes Progression Predictor. Built with FastAPI and
-          machine learning by
-          <a
-            href="https://antonynyagah.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            >Antony Nyagah</a
-          >.
-        </p>
-      </footer>
+      <div class="form-group">
+        <label for="s6" class="form-label">
+          Serum 6 (normalized)
+          <span class="tooltip">
+            ℹ️
+            <span class="tooltip-text"
+              >Sixth serum measurement (normalized)</span
+            >
+          </span>
+        </label>
+        <input
+          type="number"
+          step="0.001"
+          name="s6"
+          id="s6"
+          class="form-input"
+          placeholder="e.g., 0.02"
+          required
+        />
+      </div>
     </div>
 
-    <script src="/static/js/script.js"></script>
-  </body>
-</html>
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">
+        🔍 Predict Progression
+      </button>
+      <button
+        type="button"
+        class="btn btn-secondary"
+        onclick="fillSampleData()"
+      >
+        🎲 Generate Random Data
+      </button>
+      <button type="button" class="btn btn-secondary" onclick="clearForm()">
+        🗑️ Clear Form
+      </button>
+    </div>
+  </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+  <script src="/static/js/script.js"></script>
+{% endblock %}

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}Diabetes Progression Predictor{% endblock %}</title>
+    <link rel="stylesheet" href="/static/css/style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    {% block extra_head %}{% endblock %}
+  </head>
+  <body>
+    <div class="container">
+      <header class="header">
+        <div class="header-content">
+          <h1 class="title">
+            {% block header_title %}🩺 Diabetes Progression Predictor{% endblock %}
+          </h1>
+          <p class="subtitle">
+            {% block header_subtitle %} Enter patient physiological measurements
+            to predict diabetes progression {% endblock %}
+          </p>
+        </div>
+      </header>
+
+      <main class="main-content">{% block content %}{% endblock %}</main>
+
+      <footer class="footer">
+        <p>
+          &copy; 2025 Diabetes Progression Predictor. Built with FastAPI and
+          machine learning by
+          <a
+            href="https://antonynyagah.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Antony Nyagah</a
+          >.
+        </p>
+      </footer>
+    </div>
+
+    {% block scripts %}{% endblock %}
+  </body>
+</html>
